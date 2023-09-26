@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Система обробки новин</title>
+</head>
+<body>
+
+<h1>Система обробки новин</h1>
+
+<!-- Форма для генерації новин -->
+<div>
+  <h2>Створення новини</h2>
+  <button onclick="generateNews()">Згенерувати новину</button>
+  <div id="generatedNews"></div>
+</div>
+
+<script>
+  function generateNews() {
+    // JavaScript код для генерації новини тут
+    // Використовуйте попередній код для генерації новини
+    const categories = ['Політика', 'Економіка', 'Спорт', 'Технології'];
+    const randomTitle = `Новина ${Math.random()}`;
+    const randomText = `Це текст новини з категорії ${categories[Math.floor(Math.random() * categories.length)]}`;
+    const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+
+    const generatedNews = `
+      <h3>${randomTitle}</h3>
+      <p><strong>Категорія:</strong> ${randomCategory}</p>
+      <p>${randomText}</p>
+    `;
+
+    // Відображення згенерованої новини в блоку з id "generatedNews"
+    document.getElementById('generatedNews').innerHTML = generatedNews;
+  }
+</script>
+
+</body>
+</html>
