@@ -47,7 +47,7 @@ class User {
 
         if(isImportant){
             const existingPolitikaNewsIndex = this.queue.findIndex(item => item.news.category === 'Політика');
-            console.log(existingPolitikaNewsIndex)
+            // console.log(existingPolitikaNewsIndex)
 
             if (existingPolitikaNewsIndex !== -1) {
                 // If a news with category 'Політика' exists, insert the new news before it
@@ -60,13 +60,43 @@ class User {
         else{
             this.queue.push({news, isImportant})
         }
-        console.log(this.queue)
+        // console.log(this.queue)
 
         this.processQueue();
       }
+      
 
-    processQueue(){
-        // const currentWord = this.queue.shift();
-        // console.log("Перше слово: ", currentWord);
-    }
-  }
+    //   processQueue() {
+    //     setInterval(() => {
+    //         const queueLength = this.queue.length;
+    
+    //         if (queueLength > 0) {
+    //             // Видаляємо перший елемент
+    //             const firstElement = this.queue.shift();
+    //             console.log('First element', firstElement);
+    //             console.log('Queue', this.queue);
+    //         } else {
+    //             console.log('Черга пуста');
+    //         }
+    //     }, 4000);  // Кожні 4 секунди
+    // }
+
+
+    async processQueue() {
+        if (this.processing) {
+          return; // Если обработка уже идет, выходим
+        }
+
+        this.processing = true;
+
+        while (this.queue.length > 0) {
+          const firstElement = this.queue.shift();
+          console.log('Processing element', firstElement);
+          await new Promise(resolve => setTimeout(resolve, this.processingTimePerNews));
+        }
+
+        this.processing = false;
+        console.log('Черга пуста');
+      }
+    
+}
