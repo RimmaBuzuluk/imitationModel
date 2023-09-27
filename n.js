@@ -90,7 +90,13 @@ class User {
         this.processing = true;
 
         while (this.queue.length > 0) {
+          // Додаємо нову статтю до списку
+          
           const firstElement = this.queue.shift();
+          const newsList = document.getElementById('generatedNews');
+          const listItem = document.createElement('li');
+          listItem.textContent = `Новина: ${firstElement.news.title}, Категорія: ${firstElement.news.category}, Важлива: ${firstElement.isImportant}`;
+          newsList.appendChild(listItem); 
           console.log('Processing element', firstElement);
           await new Promise(resolve => setTimeout(resolve, this.processingTimePerNews));
         }
