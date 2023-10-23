@@ -16,7 +16,7 @@ class User {
         category: randomCategory,
       };
   
-      console.log(news);
+      // console.log(news);
 
       return news;
     }
@@ -38,7 +38,7 @@ class User {
 
   class Server {
     constructor() {
-        this.processingTimePerNews = 3000; // Час обробки однієї новини (в мілісекундах)
+        this.processingTimePerNews = 4000; // Час обробки однієї новини (в мілісекундах)
         this.queue = []; // Черга новин
       }
 
@@ -97,12 +97,12 @@ class User {
           const listItem = document.createElement('li');
           listItem.textContent = `Новина: ${firstElement.news.title}, Категорія: ${firstElement.news.category}, Важлива: ${firstElement.isImportant}`;
           newsList.appendChild(listItem); 
-          console.log('Processing element', firstElement);
+          // console.log('Processing element', firstElement);
           await new Promise(resolve => setTimeout(resolve, this.processingTimePerNews));
         }
 
         this.processing = false;
-        console.log('Черга пуста');
+        // console.log('Черга пуста');
       }
     
 }
