@@ -40,6 +40,7 @@ class User {
     constructor() {
         this.processingTimePerNews = 4000; // Час обробки однієї новини (в мілісекундах)
         this.queue = []; // Черга новин
+        this.newsArrivalTimes = []; // Зберігати часи приходу новин
       }
 
       importantNews(news){
@@ -48,7 +49,7 @@ class User {
         if(isImportant){
             const existingPolitikaNewsIndex = this.queue.findIndex(item => item.news.category === 'Політика');
             // console.log(existingPolitikaNewsIndex)
-
+            this.newsArrivalTimes.push(new Date());
             if (existingPolitikaNewsIndex !== -1) {
                 // If a news with category 'Політика' exists, insert the new news before it
                 this.queue.splice(existingPolitikaNewsIndex+1, 0, { news, isImportant });
@@ -60,27 +61,11 @@ class User {
         else{
             this.queue.push({news, isImportant})
         }
-        // console.log(this.queue)
+        
 
         this.processQueue();
       }
       
-
-    //   processQueue() {
-    //     setInterval(() => {
-    //         const queueLength = this.queue.length;
-    
-    //         if (queueLength > 0) {
-    //             // Видаляємо перший елемент
-    //             const firstElement = this.queue.shift();
-    //             console.log('First element', firstElement);
-    //             console.log('Queue', this.queue);
-    //         } else {
-    //             console.log('Черга пуста');
-    //         }
-    //     }, 4000);  // Кожні 4 секунди
-    // }
-
 
     async processQueue() {
         if (this.processing) {
@@ -93,6 +78,9 @@ class User {
           // Додаємо нову статтю до списку
           
           const firstElement = this.queue.shift();
+          const arrivalTime = this.newsArrivalTimes.shift(); // Отримати час прибуття новини
+          const processingStartTime = new Date(); // Час початку обробки
+          console.log(`Новина "${firstElement.news.title}" прибула до системи о ${arrivalTime} та була оброблена о ${processingStartTime}`);
           const newsList = document.getElementById('generatedNews');
           const listItem = document.createElement('li');
           listItem.textContent = `Новина: ${firstElement.news.title}, Категорія: ${firstElement.news.category}, Важлива: ${firstElement.isImportant}`;
@@ -104,5 +92,6 @@ class User {
         this.processing = false;
         // console.log('Черга пуста');
       }
+
     
 }

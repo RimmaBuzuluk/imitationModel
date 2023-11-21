@@ -37,8 +37,9 @@
     myChart.data.datasets[1].data.push(blueLine);
     const currentTime = new Date();
     labels.push(currentTime.getSeconds() + 'с');
-
+    // console.log(allNews)
     if (allNews > 0) {
+      allNews=allNews-1
       blueLine = 1;
     } else {
       blueLine = 0;
