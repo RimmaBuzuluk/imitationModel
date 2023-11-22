@@ -15,79 +15,58 @@
   <ul id="generatedNews"></ul>
 </div>
 <canvas id="myChart"></canvas>
+<canvas id="mySecondChart"></canvas>
+
 
 <script src="n.js"></script>
+<script src="grafik.js"></script>
+
 
 <script>
   const network = new Network();
   const server = new Server();
   const user = new User('John');
 
-  const articlesPrintedData = 0; // Початкове значення - 0 статей надруковано
-  const articlesGeneratedData = 0; // Початкове значення - 0 статей згенеровано
-  const labels = ['0с']; // Початкова мітка
+  const labels_ = ['0c']; // Початкова мітка
 
-  let generate = articlesGeneratedData;
-  let allNews=0 //кількість всіх згенерованих статей
-  let blueLine=0//значення синій гілці
+  // Отримання canvas для другого графіка
+  const secondCanvas = document.getElementById('mySecondChart');
+  const secondCtx = secondCanvas.getContext('2d');
 
-  // Функція для оновлення графіка
-  function updateChart() {
-    myChart.data.datasets[0].data.push(generate);
-    myChart.data.datasets[1].data.push(blueLine);
+  // Дані для графіка (пустий на початку)
+  const processingTimes = [];
+
+  // Функція для оновлення графіка з новими даними
+  function updateProcessingTimeChart(newTime) {
     const currentTime = new Date();
-    labels.push(currentTime.getSeconds() + 'с');
-    // console.log(allNews)
-    if (allNews > 0) {
-      allNews=allNews-1
-      blueLine = 1;
-    } else {
-      blueLine = 0;
-    }
+    labels_.push(currentTime.getSeconds() + 'с');
 
-    myChart.update();
-  }
+    const timeFirst = server.newsArrivalTimes[0];
+    const time = (currentTime - timeFirst) / 1000;
+    console.log(time);
 
-  // Функція для обнулення `generate` кожні 4 секунди
-  function resetGenerate() {
-    generate = 0;
+    processingTimes.push(time);
+    mySecondChart.update();
   }
 
   // Оновлення графіка кожні 4 секунди
-  setInterval(updateChart, 4000);
+  setInterval(updateProcessingTimeChart, 4000);
 
-  // Обнулення `generate` кожні 4 секунди
-  setInterval(resetGenerate, 4000);
-
-  function generateNews() {
-    const news = user.generateNews();
-    network.transmitNews(news);
-    server.importantNews(news);
-    generate += 1;
-    allNews=allNews+1
-    // console.log(allNews)
-  }
-
-  const ctx = document.getElementById('myChart').getContext('2d');
-
-  const myChart = new Chart(ctx, {
-    type: 'line', // Тип графіка (лінійний)
+  const mySecondChart = new Chart(secondCtx, {
+    type: 'line',
     data: {
-      labels: labels,
-      datasets: [ {
-        label: 'Згенеровано статей',
-        data: [generate],
-        borderColor: 'red',
+      labels: labels_,
+      datasets: [{
+        label: 'Час обробки новини (с)',
+        data: processingTimes,
+        borderColor: 'green',
         fill: false,
-      },{
-        label: 'Опубліковано статей',
-        data: [blueLine],
-        borderColor: 'blue',
-        fill: false,
-      }],
+      }]
     },
+    options: {
+      // Опції графіка, які можна додати за необхідності
+    }
   });
-
 </script>
 
 
